@@ -7,5 +7,5 @@ import(
 
 func main(){
 	rdb:= database.ConnectRedis()
-	handlers.redisCRUD(rdb)
+	handlers.RedisCRUD(rdb)
 }
