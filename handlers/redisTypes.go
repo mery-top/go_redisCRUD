@@ -21,6 +21,36 @@ func RedisTypes(rdb *redis.Client){
 
 	fmt.Printf("The HashMap values %s\n", hashVal)
 
+	//List
+	rdb.RPush(database.Ctx, "tasks", "task1", "task2")
+	listVal, _:= rdb.LPop(database.Ctx, "tasks").Result()
+
+	fmt.Printf("The list Values are %s\n", listVal)
+
+	//Set
+	rdb.SAdd(database.Ctx, "skills", "go", "Java")
+	setVal, _:= rdb.SMembers(database.Ctx, "skills").Result()
+
+	fmt.Printf("THe Set values are %s\n", setVal)
+
+	//SortedSet
+
+	rdb.ZAdd(database.Ctx, "leaderboard", redis.Z{
+		Score:100,
+		Member: "Alice"
+	})
+	rdb.ZAdd(database.Ctx, "leaderboard", redis.Z{
+		Score:120,
+		Member:"Bob"
+	})
+
+	leaders, _:= rdb.ZRangeWithScores(database.Ctx, "leaderboard", 0, -1).Result()
+	fmt.Println("Leaderboard:")
+	for _, z:= range leader{
+		fmt.Printf("The value of ZAdd is %v : %v", z.Score, z.Member)
+	}
+
+
 
 
 }

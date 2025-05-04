@@ -8,4 +8,5 @@ import(
 func main(){
 	rdb:= database.ConnectRedis()
 	handlers.RedisCRUD(rdb)
+	handlers.RedisTypes(rdb)
 }
