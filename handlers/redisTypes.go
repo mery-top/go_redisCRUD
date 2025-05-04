@@ -1,8 +1,9 @@
 package handlers
 
 import(
-	"github.com/redis/go=redis/v9"
+	"github.com/redis/go-redis/v9"
 	"go_redisCRUD/database"
+	"fmt"
 )
 
 func RedisTypes(rdb *redis.Client){
@@ -35,19 +36,13 @@ func RedisTypes(rdb *redis.Client){
 
 	//SortedSet
 
-	rdb.ZAdd(database.Ctx, "leaderboard", redis.Z{
-		Score:100,
-		Member: "Alice"
-	})
-	rdb.ZAdd(database.Ctx, "leaderboard", redis.Z{
-		Score:120,
-		Member:"Bob"
-	})
+	rdb.ZAdd(database.Ctx, "leaderboard", redis.Z{Score: 100,Member: "Alice"})
+	rdb.ZAdd(database.Ctx, "leaderboard", redis.Z{Score: 120,Member:"Bob"})
 
-	leaders, _:= rdb.ZRangeWithScores(database.Ctx, "leaderboard", 0, -1).Result()
+	leader, _:= rdb.ZRangeWithScores(database.Ctx, "leaderboard", 0, -1).Result()
 	fmt.Println("Leaderboard:")
 	for _, z:= range leader{
-		fmt.Printf("The value of ZAdd is %v : %v", z.Score, z.Member)
+		fmt.Printf("The value of ZAdd is %v : %v\n", z.Score, z.Member)
 	}
 
 
