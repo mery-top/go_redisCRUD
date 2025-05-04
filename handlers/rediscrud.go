@@ -2,30 +2,29 @@ package handlers
 
 import(
 	"go_redisCRUD/database"
+	"github.com/redis/go-redis/v9"
 	"fmt"
-	"context"
 	"time"
 )
 
-func redisCRUD(rdb *redis.Client){
+func RedisCRUD(rdb *redis.Client){
 	sessionID:= "user1234"
 	userID:= "101"
 
-	err:= rdb.Set(database.ctx, sessionID, userID, 10*time.Minute).Err()
+	err:= rdb.Set(database.Ctx, sessionID, userID, 10*time.Minute).Err()
 	if err!=nil{
 		panic(err)
 	}
 
 	fmt.Println("Session set successfully!")
 
-	val, err:= rdb.Get(database.ctx, sessionID).Result()
+	val, err:= rdb.Get(database.Ctx, sessionID).Result()
 	if err!= nil{
-		panic(er)
+		panic(err)
 	}
 
-	fmt.Printf("The session value is %s", val)
+	fmt.Printf("The session value is %s\n", val)
 
-	rdb.Del(database.ctx, sessionID)
-
+	rdb.Del(database.Ctx, sessionID)
 	fmt.Println("Session deleted successfully")
 }
