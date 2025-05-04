@@ -7,29 +7,25 @@ import(
 	"time"
 )
 
-var ctx = context.Background()
-
-func redisCRUD(){
-	rdb:= database.ConnectRedis()
-	
+func redisCRUD(rdb *redis.Client){
 	sessionID:= "user1234"
 	userID:= "101"
 
-	err:= rdb.Set(ctx, sessionID, userID, 10*time.Minute).Err()
+	err:= rdb.Set(database.ctx, sessionID, userID, 10*time.Minute).Err()
 	if err!=nil{
 		panic(err)
 	}
 
 	fmt.Println("Session set successfully!")
 
-	val, err:= rdb.Get(ctx, sessionID).Result()
+	val, err:= rdb.Get(database.ctx, sessionID).Result()
 	if err!= nil{
 		panic(er)
 	}
 
 	fmt.Printf("The session value is %s", val)
 
-	rdb.Del(ctx, sessionID)
+	rdb.Del(database.ctx, sessionID)
 
 	fmt.Println("Session deleted successfully")
 }
